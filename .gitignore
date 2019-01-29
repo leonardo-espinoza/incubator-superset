@@ -60,3 +60,10 @@ celerybeat.pid
 geckodriver.log
 ghostdriver.log
 testCSV.csv
+
+# Mios
+superset/migrations/
+superset/migrations-xxx/
+superset/migrations-xxx2/
+*.sublime-project
+*.sublime-workspace

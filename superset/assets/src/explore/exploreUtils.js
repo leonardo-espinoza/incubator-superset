@@ -181,3 +181,33 @@ export function exportChart(formData, endpointType) {
   exploreForm.submit();
   document.body.removeChild(exploreForm);
 }
+
+export function exportChartSourceData(dbname, sliceName, extraFilters) {
+  const url = 'https://hlvkw7mzu7.execute-api.us-east-1.amazonaws.com/V1/dashboard';
+  //  const url = 'http://127.0.0.1/matematicas3.csv';
+  console.log({ extraFilters, jsonef: JSON.stringify(extraFilters) });
+
+  const exploreForm = document.createElement('form');
+  exploreForm.action = url;
+  exploreForm.method = 'POST';
+  exploreForm.target = '_blank';
+  const dbelem = document.createElement('input');
+  dbelem.type = 'hidden';
+  dbelem.name = 'database_name';
+  dbelem.value = dbname;
+  exploreForm.appendChild(dbelem);
+  const sliceelem = document.createElement('input');
+  sliceelem.type = 'hidden';
+  sliceelem.name = 'slice_name';
+  sliceelem.value = sliceName;
+  exploreForm.appendChild(sliceelem);
+  const filterselem = document.createElement('input');
+  filterselem.type = 'hidden';
+  filterselem.name = 'external_filters';
+  filterselem.value = encodeURI(JSON.stringify(extraFilters));
+  exploreForm.appendChild(filterselem);
+
+  document.body.appendChild(exploreForm);
+  exploreForm.submit();
+  document.body.removeChild(exploreForm);
+}

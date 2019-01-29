@@ -41,6 +41,7 @@ const propTypes = {
   forceRefresh: PropTypes.func,
   exploreChart: PropTypes.func,
   exportCSV: PropTypes.func,
+  exportDataCSV: PropTypes.func,
 };
 
 const defaultProps = {
@@ -48,6 +49,7 @@ const defaultProps = {
   toggleExpandSlice: () => ({}),
   exploreChart: () => ({}),
   exportCSV: () => ({}),
+  exportDataCSV: () => ({}),
   cachedDttm: null,
   updatedDttm: null,
   isCached: false,
@@ -68,6 +70,7 @@ class SliceHeaderControls extends React.PureComponent {
   constructor(props) {
     super(props);
     this.exportCSV = this.exportCSV.bind(this);
+    this.exportDataCSV = this.exportDataCSV.bind(this);
     this.exploreChart = this.exploreChart.bind(this);
     this.toggleControls = this.toggleControls.bind(this);
     this.refreshChart = this.refreshChart.bind(this);
@@ -91,6 +94,10 @@ class SliceHeaderControls extends React.PureComponent {
       },
       true,
     );
+  }
+  exportDataCSV() {
+    console.log({ class: "SliceHeaderControls", props: this.props })
+    this.props.exportDataCSV(this.props.slice.slice_id);
   }
 
   exploreChart() {
@@ -161,7 +168,15 @@ class SliceHeaderControls extends React.PureComponent {
             </MenuItem>
           )}
 
-          <MenuItem onClick={this.exportCSV}>{t('Export CSV')}</MenuItem>
+          {(this.props.slice.viz_type != 'filter_box') && (
+            <MenuItem onClick={this.exportCSV}>{t('Export CSV')}</MenuItem>
+          )}
+
+          {(this.props.slice.viz_type != 'filter_box') && (
+            <MenuItem onClick={this.exportDataCSV}>
+              {t('Export Data CSV')}
+            </MenuItem>
+          )}
 
           {this.props.supersetCanExplore && (
             <MenuItem onClick={this.exploreChart}>

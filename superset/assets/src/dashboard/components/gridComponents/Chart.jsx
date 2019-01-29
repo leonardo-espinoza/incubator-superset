@@ -19,7 +19,7 @@
 import cx from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { exportChart } from '../../../explore/exploreUtils';
+import { exportChart, exportChartSourceData } from '../../../explore/exploreUtils';
 import SliceHeader from '../SliceHeader';
 import ChartContainer from '../../../chart/ChartContainer';
 import MissingChart from '../MissingChart';
@@ -67,6 +67,7 @@ class Chart extends React.Component {
     this.addFilter = this.addFilter.bind(this);
     this.exploreChart = this.exploreChart.bind(this);
     this.exportCSV = this.exportCSV.bind(this);
+    this.exportDataCSV = this.exportDataCSV.bind(this);
     this.forceRefresh = this.forceRefresh.bind(this);
     this.resize = this.resize.bind(this);
     this.setDescriptionRef = this.setDescriptionRef.bind(this);
@@ -144,6 +145,10 @@ class Chart extends React.Component {
   exportCSV() {
     exportChart(this.props.formData, 'csv');
   }
+  exportDataCSV() {
+    console.log({ class: 'Chart', props: this.props });
+    exportChartSourceData(this.props.datasource.database.name, this.props.sliceName, this.props.formData.extra_filters);
+  }
 
   forceRefresh() {
     return this.props.refreshChart(this.props.chart, true, this.props.timeout);
@@ -195,6 +200,7 @@ class Chart extends React.Component {
           annotationQuery={chart.annotationQuery}
           exploreChart={this.exploreChart}
           exportCSV={this.exportCSV}
+          exportDataCSV={this.exportDataCSV}
           updateSliceName={updateSliceName}
           sliceName={sliceName}
           supersetCanExplore={supersetCanExplore}

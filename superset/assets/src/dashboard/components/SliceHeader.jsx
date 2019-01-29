@@ -36,6 +36,7 @@ const propTypes = {
   forceRefresh: PropTypes.func,
   exploreChart: PropTypes.func,
   exportCSV: PropTypes.func,
+  exportDataCSV: PropTypes.func,
   editMode: PropTypes.bool,
   annotationQuery: PropTypes.object,
   annotationError: PropTypes.object,
@@ -52,6 +53,7 @@ const defaultProps = {
   toggleExpandSlice: () => ({}),
   exploreChart: () => ({}),
   exportCSV: () => ({}),
+  exportDataCSV: () => ({}),
   editMode: false,
   annotationQuery: {},
   annotationError: {},
@@ -79,6 +81,7 @@ class SliceHeader extends React.PureComponent {
       forceRefresh,
       exploreChart,
       exportCSV,
+      exportDataCSV,
       innerRef,
       sliceName,
       supersetCanExplore,
@@ -132,6 +135,7 @@ class SliceHeader extends React.PureComponent {
               forceRefresh={forceRefresh}
               exploreChart={exploreChart}
               exportCSV={exportCSV}
+              exportDataCSV={exportDataCSV}
               supersetCanExplore={supersetCanExplore}
               sliceCanEdit={sliceCanEdit}
             />
