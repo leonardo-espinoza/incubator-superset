@@ -58,9 +58,9 @@ with open(os.path.join(PACKAGE_DIR, 'version_info.json'), 'w') as version_file:
 
 
 setup(
-    name='superset',
+    name='wpt-superset',
     description=(
-        'A modern, enterprise-ready business intelligence web application'),
+        'A "Waypoint Telecomunicaciones" version of a modern, enterprise-ready business intelligence web application.'),
     long_description=long_description,
     long_description_content_type='text/markdown',
     version=version_string,
@@ -115,12 +115,12 @@ setup(
         'cors': ['flask-cors>=2.0.0'],
         'console_log': ['console_log==0.2.10'],
     },
-    author='Apache Superset Dev',
-    author_email='dev@superset.incubator.apache.org',
-    url='https://github.com/apache/incubator-superset',
+    author='Waypoint Superset Dev',
+    author_email='lespinoza@waypoint.cl',
+    url='https://github.com/leonardo-espinoza/incubator-superset',
     download_url=(
         'https://github.com'
-        '/apache/incubator-superset/tarball/' + version_string
+        '/leonardo-espinoza/incubator-superset/tarball/' + version_string
     ),
     classifiers=[
         'Programming Language :: Python :: 3.6',
