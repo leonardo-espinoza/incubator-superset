@@ -1,8 +1,26 @@
-from __future__ import with_statement
-from alembic import context
-from sqlalchemy import engine_from_config, pool
-from logging.config import fileConfig
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+# pylint: disable=C,R,W
 import logging
+from logging.config import fileConfig
+
+from alembic import context
+from flask_appbuilder import Base
+from sqlalchemy import engine_from_config, pool
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -16,11 +34,11 @@ logger = logging.getLogger('alembic.env')
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
 from flask import current_app
+
 config.set_main_option('sqlalchemy.url',
                        current_app.config.get('SQLALCHEMY_DATABASE_URI'))
-target_metadata = current_app.extensions['migrate'].db.metadata
+target_metadata = Base.metadata   # pylint: disable=no-member
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -57,7 +75,7 @@ def run_migrations_online():
 
     # this callback is used to prevent an auto-migration from being generated
     # when there are no changes to the schema
-    # reference: http://alembic.zzzcomputing.com/en/latest/cookbook.html
+    # reference: http://alembic.readthedocs.org/en/latest/cookbook.html
     def process_revision_directives(context, revision, directives):
         if getattr(config.cmd_opts, 'autogenerate', False):
             script = directives[0]
@@ -70,10 +88,21 @@ def run_migrations_online():
                                 poolclass=pool.NullPool)
 
     connection = engine.connect()
+    kwargs = {}
+    if engine.name in ('sqlite', 'mysql'):
+        kwargs = {
+            'transaction_per_migration': True,
+            'transactional_ddl': True,
+        }
+    configure_args = current_app.extensions['migrate'].configure_args
+    if configure_args:
+        kwargs.update(configure_args)
+
     context.configure(connection=connection,
                       target_metadata=target_metadata,
+                      # compare_type=True,
                       process_revision_directives=process_revision_directives,
-                      **current_app.extensions['migrate'].configure_args)
+                      **kwargs)
 
     try:
         with context.begin_transaction():
